@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Palette TAAMA — B2B industriel africain ─────────────────────────── */
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2333;
+  --bg4: #242f3f;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #484f58;
+  --amber: #f0a832;
+  --amber2: #f7c060;
+  --amber3: #c07d10;
+  --terra: #c4572a;
+  --terra2: #e07050;
+  --green: #3fb950;
+  --red: #f85149;
+  --blue: #58a6ff;
+  --border: #21262d;
+  --border2: #30363d;
+  --radius: 0.625rem;
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--bg2);
+  --card-foreground: var(--text);
+  --primary: var(--amber);
+  --primary-foreground: var(--bg);
+  --secondary: var(--bg3);
+  --secondary-foreground: var(--text);
+  --muted: var(--bg3);
+  --muted-foreground: var(--text2);
+  --accent: var(--bg4);
+  --accent-foreground: var(--text);
+  --destructive: var(--red);
+  --border: var(--border);
+  --input: var(--bg3);
+  --ring: var(--amber);
+  --sidebar-background: var(--bg2);
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--amber);
+  --sidebar-primary-foreground: var(--bg);
+  --sidebar-accent: var(--bg3);
+  --sidebar-accent-foreground: var(--text);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--amber);
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ─── Scrollbar premium ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--amber3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--amber);
+}
+
+/* ─── Sélection texte ───────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--amber);
+  color: var(--bg);
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 168, 50, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(240, 168, 50, 0); }
+}
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.animate-pulse-amber { animation: pulse-amber 2s infinite; }
+
+/* ─── Utilitaires TAAMA ─────────────────────────────────────────────────── */
+.taama-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.taama-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+.taama-btn-primary {
+  background: var(--amber);
+  color: var(--bg);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+.taama-btn-primary:hover {
+  background: var(--amber2);
+  transform: translateY(-1px);
+}
+.taama-gradient-text {
+  background: linear-gradient(135deg, var(--amber) 0%, var(--amber2) 50%, var(--terra2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.grain-bg {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+}
