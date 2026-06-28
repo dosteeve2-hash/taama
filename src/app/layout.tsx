@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "SaaS industriel B2B pour les PME de transformation au Burkina Faso. Suivi de production, gestion des stocks, traçabilité EUDR.",
   keywords: ["production", "industrie", "Burkina Faso", "traçabilité", "EUDR", "karité", "coton"],
-  authors: [{ name: "Steve Donald Compaoré" }],
+  authors: [{ name: "Steeve Donald Compaoré" }],
 };
 
 export default function RootLayout({
