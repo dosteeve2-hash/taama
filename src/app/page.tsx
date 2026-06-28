@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   BarChart3, Package, FileCheck, TrendingUp, ArrowRight,
   Factory, Wheat, Droplets, Leaf, Apple, Beef, Sparkles,
-  ShieldCheck, Clock, AlertTriangle,
+  ShieldCheck, Clock, AlertTriangle, Star, Check, Zap,
 } from "lucide-react";
 
 // ─── Données statiques ────────────────────────────────────────────────────────
@@ -52,6 +52,92 @@ const benefits = [
   { icon: ShieldCheck,   text: "Conformité EUDR 2026 garantie" },
   { icon: Clock,         text: "10 min/jour pour piloter votre usine" },
   { icon: AlertTriangle, text: "Alertes stock avant la rupture" },
+];
+
+const testimonials = [
+  {
+    name: "Aminata Ouédraogo",
+    role: "Directrice, Karité Plus SARL",
+    location: "Bobo-Dioulasso",
+    quote:
+      "Avant TAAMA, on perdait 2 à 3 semaines chaque audit EUDR. Aujourd'hui, le rapport sort en 10 minutes. C'est une révolution pour nous.",
+    rating: 5,
+    avatar: "AO",
+    color: "var(--amber)",
+  },
+  {
+    name: "Ibrahim Sawadogo",
+    role: "Gérant, Moulin du Sahel",
+    location: "Ouagadougou",
+    quote:
+      "On a identifié 18% de pertes invisibles sur nos transformations de céréales. En 3 mois, on a récupéré ces marges. Le ROI est réel.",
+    rating: 5,
+    avatar: "IS",
+    color: "var(--terra2)",
+  },
+  {
+    name: "Fatoumata Zongo",
+    role: "Responsable production, AfriSésame",
+    location: "Koudougou",
+    quote:
+      "L'interface est simple, mon équipe terrain l'a adopté sans formation. En une semaine, toute la traçabilité était en place.",
+    rating: 5,
+    avatar: "FZ",
+    color: "var(--green)",
+  },
+];
+
+const pricingPlans = [
+  {
+    name: "Starter",
+    price: "15 000",
+    period: "FCFA / mois",
+    description: "Pour démarrer la traçabilité",
+    color: "var(--blue)",
+    features: [
+      "1 site de production",
+      "Jusqu'à 50 lots / mois",
+      "Gestion stock basique",
+      "Rapports PDF",
+      "Support email",
+    ],
+    cta: "Commencer gratuit",
+    highlighted: false,
+  },
+  {
+    name: "PME",
+    price: "45 000",
+    period: "FCFA / mois",
+    description: "Pour les PME en croissance",
+    color: "var(--amber)",
+    features: [
+      "3 sites de production",
+      "Lots illimités",
+      "Graphiques & analytics",
+      "Conformité EUDR complète",
+      "Alertes intelligentes",
+      "Support prioritaire",
+    ],
+    cta: "Essai 30 jours gratuit",
+    highlighted: true,
+  },
+  {
+    name: "Entreprise",
+    price: "Sur devis",
+    period: "",
+    description: "Pour les groupes industriels",
+    color: "var(--terra2)",
+    features: [
+      "Sites illimités",
+      "API & intégrations ERP",
+      "Tableau de bord multi-sites",
+      "Rapports bancaires & export",
+      "Formation équipe incluse",
+      "Account manager dédié",
+    ],
+    cta: "Nous contacter",
+    highlighted: false,
+  },
 ];
 
 // ─── Composant principal ──────────────────────────────────────────────────────
@@ -347,6 +433,131 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── TÉMOIGNAGES ─────────────────────────────────────────────────────── */}
+      <section
+        id="témoignages"
+        className="px-6 py-24"
+        style={{ background: "var(--bg2)", borderTop: "1px solid var(--border)" }}
+      >
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
+              Ce que disent nos utilisateurs
+            </h2>
+            <p style={{ color: "var(--text2)" }}>
+              Des PME du Burkina Faso qui ont transformé leur gestion avec TAAMA.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t) => (
+              <div key={t.name} className="taama-card p-6 flex flex-col gap-4">
+                {/* Étoiles */}
+                <div className="flex gap-1">
+                  {[...Array(t.rating)].map((_, i) => (
+                    <Star key={i} size={14} style={{ color: "var(--amber)", fill: "var(--amber)" }} />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed flex-1" style={{ color: "var(--text2)" }}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 pt-2" style={{ borderTop: "1px solid var(--border)" }}>
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                    style={{ background: `${t.color}20`, color: t.color }}
+                  >
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm" style={{ color: "var(--text)" }}>
+                      {t.name}
+                    </div>
+                    <div className="text-xs" style={{ color: "var(--text3)" }}>
+                      {t.role} · {t.location}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ─────────────────────────────────────────────────────────── */}
+      <section id="tarifs" className="px-6 py-24">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
+              Tarifs transparents
+            </h2>
+            <p style={{ color: "var(--text2)" }}>
+              Sans engagement. Sans surprise. Adapté à la réalité des PME africaines.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.name}
+                className="taama-card p-6 flex flex-col gap-5 relative"
+                style={
+                  plan.highlighted
+                    ? { border: `1px solid ${plan.color}50`, boxShadow: `0 0 32px ${plan.color}10` }
+                    : {}
+                }
+              >
+                {plan.highlighted && (
+                  <div
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1"
+                    style={{ background: plan.color, color: "var(--bg)" }}
+                  >
+                    <Zap size={11} /> Populaire
+                  </div>
+                )}
+                <div>
+                  <div className="font-semibold text-sm mb-1" style={{ color: plan.color }}>
+                    {plan.name}
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black" style={{ color: "var(--text)" }}>
+                      {plan.price}
+                    </span>
+                    {plan.period && (
+                      <span className="text-sm" style={{ color: "var(--text3)" }}>
+                        {plan.period}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs mt-1" style={{ color: "var(--text3)" }}>
+                    {plan.description}
+                  </p>
+                </div>
+                <ul className="flex flex-col gap-2.5 flex-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm" style={{ color: "var(--text2)" }}>
+                      <Check size={14} className="flex-shrink-0 mt-0.5" style={{ color: plan.color }} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={plan.highlighted ? "/inscription" : "#"}
+                  className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    plan.highlighted ? "taama-btn-primary" : ""
+                  }`}
+                  style={
+                    !plan.highlighted
+                      ? { border: "1px solid var(--border2)", color: "var(--text2)" }
+                      : {}
+                  }
+                >
+                  {plan.cta}
+                  {plan.highlighted && <ArrowRight size={16} />}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA FINAL ───────────────────────────────────────────────────────── */}
       <section className="px-6 py-24 text-center">
         <div className="max-w-2xl mx-auto">
@@ -398,7 +609,7 @@ export default function LandingPage() {
           <span>•</span>
           <span>Ouagadougou, Burkina Faso</span>
           <span>•</span>
-          <span>Conçu par Steve Donald Compaoré</span>
+          <span>Conçu par Steeve Donald Compaoré</span>
         </div>
       </footer>
 

@@ -13,10 +13,12 @@ import {
   getRecentBatches,
   getAlertesNonLues,
   getSitesAvecLotsEnCours,
+  getInventoryWithAlerts,
 } from '@/lib/queries';
 import ProductionChart from '@/components/dashboard/ProductionChart';
+import StockChart, { type StockPoint } from '@/components/dashboard/StockChart';
 import DashboardAlertes from './DashboardAlertes';
-import type { Batch, BatchInput, BatchOutput, Alert } from '@/types/database';
+import type { Batch, BatchInput, BatchOutput, Alert, InventoryItem } from '@/types/database';
 
 // ─── Badge statut lot ─────────────────────────────────────────────────────────
 function StatusBadge({ statut }: { statut: string }) {
@@ -47,6 +49,20 @@ function calculerRendement(lot: Batch): number {
   return Math.round((totalSortie / totalEntree) * 100);
 }
 
+// ─── Préparer données stock par matière ──────────────────────────────────────
+function preparerDonneesStock(inventaire: InventoryItem[]): StockPoint[] {
+  return inventaire
+    .filter((item) => item.materials?.category === 'raw')
+    .map((item) => ({
+      nom: item.materials?.name ?? '?',
+      quantite: Math.round(Number(item.quantity) * 10) / 10,
+      seuil: Math.round(Number(item.min_threshold) * 10) / 10,
+      unite: item.materials?.unit ?? '',
+    }))
+    .sort((a, b) => b.quantite - a.quantite)
+    .slice(0, 10);
+}
+
 // ─── Préparer les données du graphique ───────────────────────────────────────
 function preparerDonneesGraphique(lots: Batch[]): Array<{ date: string; tonnes: number }> {
   // Grouper les sorties par jour du mois en cours
@@ -74,15 +90,17 @@ export default async function DashboardPage() {
   const siteId = profil.site_id ?? '';
   const orgId = profil.org_id;
 
-  const [stats, lots, alertes, sitesActifs] = await Promise.all([
+  const [stats, lots, alertes, sitesActifs, inventaire] = await Promise.all([
     getOrgDashboardStats(orgId),
     getRecentBatches(siteId, 20),
     getAlertesNonLues(orgId, 5),
     getSitesAvecLotsEnCours(orgId),
+    getInventoryWithAlerts(siteId),
   ]);
 
   const derniersMajAt = format(new Date(), "d MMMM 'à' HH'h'mm", { locale: fr });
   const donneesCourbe = preparerDonneesGraphique(lots);
+  const donneesStock = preparerDonneesStock(inventaire as InventoryItem[]);
 
   const kpis = [
     {
@@ -181,6 +199,24 @@ export default async function DashboardPage() {
         </div>
         <ProductionChart donnees={donneesCourbe} />
       </div>
+
+      {/* Graphique stock matières premières */}
+      {donneesStock.length > 0 && (
+        <div className="taama-card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-semibold text-base" style={{ color: 'var(--text)' }}>
+              Stock matières premières
+            </h2>
+            <span
+              className="text-xs px-2 py-1 rounded-lg"
+              style={{ background: 'rgba(196,87,42,0.1)', color: 'var(--terra)' }}
+            >
+              en stock
+            </span>
+          </div>
+          <StockChart donnees={donneesStock} />
+        </div>
+      )}
 
       {/* Sites actifs */}
       {sitesActifs.length > 0 && (
