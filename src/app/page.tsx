@@ -179,6 +179,9 @@ export default function LandingPage() {
           <Link href="/pricing" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
             Tarifs
           </Link>
+          <Link href="/demo" className="text-sm font-medium transition-colors" style={{ color: "var(--amber)" }}>
+            Démo
+          </Link>
         </div>
         <div className="flex items-center gap-3">
           <Link
