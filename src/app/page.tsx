@@ -3,6 +3,7 @@ import {
   BarChart3, Package, FileCheck, TrendingUp, ArrowRight,
   Factory, Wheat, Droplets, Leaf, Apple, Beef, Sparkles,
   ShieldCheck, Clock, AlertTriangle, Star, Check, Zap,
+  Coffee, TreePine,
 } from "lucide-react";
 
 // ─── Données statiques ────────────────────────────────────────────────────────
@@ -38,10 +39,12 @@ const features = [
 ];
 
 const sectors = [
-  { icon: Wheat,    label: "Céréales" },
-  { icon: Leaf,     label: "Karité" },
-  { icon: Sparkles, label: "Sésame" },
   { icon: Factory,  label: "Coton" },
+  { icon: Coffee,   label: "Cacao" },
+  { icon: TreePine, label: "Bois / Acajou" },
+  { icon: Leaf,     label: "Karité" },
+  { icon: Wheat,    label: "Céréales" },
+  { icon: Sparkles, label: "Sésame" },
   { icon: Apple,    label: "Mangue séchée" },
   { icon: Beef,     label: "Élevage" },
   { icon: Droplets, label: "Savonnerie" },
@@ -56,33 +59,33 @@ const benefits = [
 
 const testimonials = [
   {
-    name: "Aminata Ouédraogo",
-    role: "Directrice, Karité Plus SARL",
-    location: "Bobo-Dioulasso",
+    name: "Moussa Traoré",
+    role: "Directeur, Mali Coton Export SARL",
+    location: "Ségou, Mali",
     quote:
-      "Avant TAAMA, on perdait 2 à 3 semaines chaque audit EUDR. Aujourd'hui, le rapport sort en 10 minutes. C'est une révolution pour nous.",
+      "Chaque balle de coton est tracée de la récolte à l'égrenage. Nos acheteurs européens reçoivent leur rapport EUDR en 5 minutes — c'est ce qui nous a ouvert les portes du marché UE.",
     rating: 5,
-    avatar: "AO",
+    avatar: "MT",
     color: "var(--amber)",
   },
   {
-    name: "Ibrahim Sawadogo",
-    role: "Gérant, Moulin du Sahel",
-    location: "Ouagadougou",
+    name: "Adjoua Yao Konan",
+    role: "PDG, Cacao Premium CI SARL",
+    location: "San-Pédro, Côte d'Ivoire",
     quote:
-      "On a identifié 18% de pertes invisibles sur nos transformations de céréales. En 3 mois, on a récupéré ces marges. Le ROI est réel.",
+      "On a détecté 22% de pertes invisibles entre la fermentation et le séchage. En réajustant le process, on a récupéré ces marges en 2 cycles. TAAMA nous a donné des chiffres que personne n'avait jamais calculés.",
     rating: 5,
-    avatar: "IS",
+    avatar: "AK",
     color: "var(--terra2)",
   },
   {
-    name: "Fatoumata Zongo",
-    role: "Responsable production, AfriSésame",
-    location: "Koudougou",
+    name: "Emmanuel Nkoa",
+    role: "Gérant, Bois & Acajou Industries",
+    location: "Douala, Cameroun",
     quote:
-      "L'interface est simple, mon équipe terrain l'a adopté sans formation. En une semaine, toute la traçabilité était en place.",
+      "La traçabilité EUDR sur le bois, c'était notre plus grand défi. Maintenant, chaque grume a son code lot et son origine GPS. Le certificat sort automatiquement — zéro retard à l'export.",
     rating: 5,
-    avatar: "FZ",
+    avatar: "EN",
     color: "var(--green)",
   },
 ];
@@ -167,16 +170,15 @@ export default function LandingPage() {
           </span>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {["Fonctionnalités", "Secteurs", "Tarifs"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-sm transition-colors"
-              style={{ color: "var(--text2)" }}
-            >
-              {item}
-            </a>
-          ))}
+          <a href="#fonctionnalités" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Fonctionnalités
+          </a>
+          <a href="#secteurs" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Secteurs
+          </a>
+          <Link href="/pricing" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Tarifs
+          </Link>
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -411,7 +413,7 @@ export default function LandingPage() {
               Pour votre secteur
             </h2>
             <p style={{ color: "var(--text2)" }}>
-              TAAMA s&apos;adapte à chaque industrie de transformation au Burkina Faso.
+              Coton, cacao, bois, karité, sésame — TAAMA s&apos;adapte à chaque filière de transformation en Afrique de l&apos;Ouest et Centrale.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
@@ -445,7 +447,7 @@ export default function LandingPage() {
               Ce que disent nos utilisateurs
             </h2>
             <p style={{ color: "var(--text2)" }}>
-              Des PME du Burkina Faso qui ont transformé leur gestion avec TAAMA.
+              Du Mali à la Côte d&apos;Ivoire, du Cameroun au Burkina Faso — des PME africaines qui ont transformé leur gestion avec TAAMA.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
