@@ -117,6 +117,9 @@ export default function PricingPage() {
           <Link href="/demo" className="text-sm font-medium transition-colors" style={{ color: "var(--text2)" }}>
             Démo
           </Link>
+          <Link href="/contact" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Contact
+          </Link>
         </div>
         <div className="flex items-center gap-3">
           <Link
