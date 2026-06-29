@@ -128,6 +128,18 @@ export interface Alert {
   created_at: string;
 }
 
+export interface DemoRequest {
+  id: string;
+  prenom: string;
+  nom: string;
+  email: string;
+  entreprise: string;
+  filiere: string;
+  nb_employes: string;
+  message: string | null;
+  created_at: string;
+}
+
 // ─── Types utilitaires ────────────────────────────────────────────────────────
 
 /** Stats globales pour le dashboard */
