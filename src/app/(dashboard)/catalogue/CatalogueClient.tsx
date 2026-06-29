@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useMemo } from 'react';
 import { Plus, Trash2, Loader2, AlertCircle, BookOpen, Truck } from 'lucide-react';
+import { SearchInput } from '@/components/ui/SearchInput';
+import { useDebounce } from '@/hooks/useDebounce';
 import { ajouterMatiere, supprimerMatiere, ajouterFournisseur, supprimerFournisseur } from './actions';
 import type { Material, Supplier } from '@/types/database';
 
@@ -137,6 +139,31 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
   const [onglet, setOnglet] = useState<'matieres' | 'fournisseurs'>('matieres');
   const [isPendingDel, startDel] = useTransition();
   const [erreurDel, setErreurDel] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearch = useDebounce(searchQuery, 300);
+
+  // Filtrage des matières par recherche
+  const filteredMaterials = useMemo(() => {
+    if (!debouncedSearch.trim()) return materials;
+    const q = debouncedSearch.toLowerCase();
+    return materials.filter(
+      (m) =>
+        m.name.toLowerCase().includes(q) ||
+        (m.description ?? '').toLowerCase().includes(q)
+    );
+  }, [materials, debouncedSearch]);
+
+  // Filtrage des fournisseurs par recherche
+  const filteredSuppliers = useMemo(() => {
+    if (!debouncedSearch.trim()) return suppliers;
+    const q = debouncedSearch.toLowerCase();
+    return suppliers.filter(
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        (s.contact ?? '').toLowerCase().includes(q) ||
+        (s.location ?? '').toLowerCase().includes(q)
+    );
+  }, [suppliers, debouncedSearch]);
 
   const supprimerM = (id: string) => {
     if (!confirm('Supprimer cette matière ?')) return;
@@ -171,6 +198,21 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
         </div>
       )}
 
+      {/* Barre de recherche */}
+      <SearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder={onglet === 'matieres' ? 'Rechercher une matière…' : 'Rechercher un fournisseur…'}
+        resultCount={
+          searchQuery
+            ? onglet === 'matieres'
+              ? filteredMaterials.length
+              : filteredSuppliers.length
+            : undefined
+        }
+        className="max-w-sm"
+      />
+
       {/* Onglets */}
       <div className="flex gap-1 p-1 rounded-xl w-fit" style={{ background: 'var(--bg3)' }}>
         {([['matieres', 'Matières & Produits', BookOpen], ['fournisseurs', 'Fournisseurs', Truck]] as [string, string, React.ElementType][]).map(([id, label, Icon]) => (
@@ -191,11 +233,11 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Tableau */}
           <div className="lg:col-span-2 taama-card overflow-hidden">
-            {materials.length === 0 ? (
+            {filteredMaterials.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 gap-3">
                 <BookOpen size={28} style={{ color: 'var(--text3)' }} />
                 <p className="text-sm" style={{ color: 'var(--text2)' }}>
-                  Aucune matière dans le catalogue.
+                  {debouncedSearch ? 'Aucune matière trouvée.' : 'Aucune matière dans le catalogue.'}
                 </p>
               </div>
             ) : (
@@ -210,11 +252,11 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
                     </tr>
                   </thead>
                   <tbody>
-                    {materials.map((m, i) => {
+                    {filteredMaterials.map((m, i) => {
                       const cat = labelCategorie[m.category];
                       return (
                         <tr key={m.id}
-                          style={{ borderBottom: i < materials.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                          style={{ borderBottom: i < filteredMaterials.length - 1 ? '1px solid var(--border)' : 'none' }}>
                           <td className="px-5 py-3.5 font-medium" style={{ color: 'var(--text)' }}>
                             {m.name}
                             {m.description && (
@@ -256,11 +298,11 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Tableau */}
           <div className="lg:col-span-2 taama-card overflow-hidden">
-            {suppliers.length === 0 ? (
+            {filteredSuppliers.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 gap-3">
                 <Truck size={28} style={{ color: 'var(--text3)' }} />
                 <p className="text-sm" style={{ color: 'var(--text2)' }}>
-                  Aucun fournisseur dans le catalogue.
+                  {debouncedSearch ? 'Aucun fournisseur trouvé.' : 'Aucun fournisseur dans le catalogue.'}
                 </p>
               </div>
             ) : (
@@ -275,9 +317,9 @@ export default function CatalogueClient({ materials, suppliers, orgId }: Props) 
                     </tr>
                   </thead>
                   <tbody>
-                    {suppliers.map((s, i) => (
+                    {filteredSuppliers.map((s, i) => (
                       <tr key={s.id}
-                        style={{ borderBottom: i < suppliers.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                        style={{ borderBottom: i < filteredSuppliers.length - 1 ? '1px solid var(--border)' : 'none' }}>
                         <td className="px-5 py-3.5 font-medium" style={{ color: 'var(--text)' }}>{s.name}</td>
                         <td className="px-5 py-3.5 text-xs" style={{ color: 'var(--text2)' }}>{s.contact ?? '—'}</td>
                         <td className="px-5 py-3.5 text-xs" style={{ color: 'var(--text2)' }}>{s.location ?? '—'}</td>
