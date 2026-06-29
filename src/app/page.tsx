@@ -170,16 +170,15 @@ export default function LandingPage() {
           </span>
         </div>
         <div className="hidden md:flex items-center gap-6">
-          {["Fonctionnalités", "Secteurs", "Tarifs"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-sm transition-colors"
-              style={{ color: "var(--text2)" }}
-            >
-              {item}
-            </a>
-          ))}
+          <a href="#fonctionnalités" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Fonctionnalités
+          </a>
+          <a href="#secteurs" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Secteurs
+          </a>
+          <Link href="/pricing" className="text-sm transition-colors" style={{ color: "var(--text2)" }}>
+            Tarifs
+          </Link>
         </div>
         <div className="flex items-center gap-3">
           <Link
